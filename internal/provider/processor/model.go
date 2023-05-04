@@ -19,7 +19,7 @@ type Processor interface {
 
 	KnapsackMinTable(items []*wordMetric) [][]knapsack
 	MinChoice(bc [][]knapsack) (knapsack, int)
-	MaxLenBackpack(b1, b2, b3 knapsack) knapsack
+	MaxLenKnapsack(b1, b2, b3 knapsack) knapsack
 }
 
 func New(m map[string]map[string]int, minLen, maxLen, wordCnt int) Processor {

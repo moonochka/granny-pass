@@ -4,7 +4,7 @@ import (
 	"math"
 )
 
-// BackpackMinTable
+// KnapsackMinTable
 // maxLen - knapsack capacity = count of symbols in password = 24
 // pathLen  - 1/pathLen because we should find a min distance
 func (v *vocabulary) KnapsackMinTable(items []*wordMetric) [][]knapsack {
@@ -131,7 +131,7 @@ func (v *vocabulary) KnapsackMinTable(items []*wordMetric) [][]knapsack {
 					}
 
 					//смотрим длины элементов сверху и слева, тк по столбцу и строке длина не должна уменьшаться
-					bMinNew = v.MaxLenBackpack(bMinNew, bp[i-1][j], bp[i][j-1])
+					bMinNew = v.MaxLenKnapsack(bMinNew, bp[i-1][j], bp[i][j-1])
 
 					// если длина bMinNew больше длины элемента сверху, пишем bMinNew
 					if len(bMinNew.GetDescription()) > len(bp[i-1][j].GetDescription()) {
@@ -170,7 +170,7 @@ func (v *vocabulary) KnapsackMinTable(items []*wordMetric) [][]knapsack {
 }
 
 func (v *vocabulary) MinChoice(bc [][]knapsack) (knapsack, int) {
-	var minBackpack knapsack
+	var minKnapsack knapsack
 
 	n := len(bc)
 	k := len(bc[0])
@@ -182,12 +182,12 @@ func (v *vocabulary) MinChoice(bc [][]knapsack) (knapsack, int) {
 			if bc[i][j].pathLen < minPathLen && bc[i][j].count == v.wordCnt && len(bc[i][j].GetDescription()) >= v.minLen {
 				//fmt.Printf("i=%v j=%v \n", i, j)
 				minPathLen = bc[i][j].pathLen
-				minBackpack = bc[i][j]
+				minKnapsack = bc[i][j]
 			}
 		}
 	}
 
-	return minBackpack, minPathLen
+	return minKnapsack, minPathLen
 }
 
 func isGood(n int) bool {
@@ -197,7 +197,7 @@ func isGood(n int) bool {
 	return false
 }
 
-func (v *vocabulary) MaxLenBackpack(b1, b2, b3 knapsack) knapsack {
+func (v *vocabulary) MaxLenKnapsack(b1, b2, b3 knapsack) knapsack {
 	var b, bMax knapsack
 	bMax = b1
 

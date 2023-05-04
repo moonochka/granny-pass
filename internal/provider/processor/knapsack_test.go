@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestBackpack(t *testing.T) {
+func TestKnapsack(t *testing.T) {
 	t.Run("test knapsack functions", func(t *testing.T) {
 		var (
 			maxPathLen, pathLen int

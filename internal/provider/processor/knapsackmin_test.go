@@ -17,8 +17,8 @@ type testParam struct {
 	wordCnt  int
 }
 
-func TestBackpackmin(t *testing.T) {
-	t.Run("test backpackmin functions", func(t *testing.T) {
+func TestKnapsackmin(t *testing.T) {
+	t.Run("test knapsackmin functions", func(t *testing.T) {
 		var (
 			maxPathLen, p int
 			err           error
@@ -99,7 +99,7 @@ func TestBackpackmin(t *testing.T) {
 		}
 	})
 
-	t.Run("test MaxLenBackpack functions", func(t *testing.T) {
+	t.Run("test MaxLenKnapsack functions", func(t *testing.T) {
 		dist := getDistanceMatrixForTests()
 		v := New(dist, 0, 0, 0)
 
@@ -126,12 +126,12 @@ func TestBackpackmin(t *testing.T) {
 			pathLen: 13,
 			count:   2,
 		}
-		assert.Equal(t, b1, v.MaxLenBackpack(b1, b2, b3))
-		assert.Equal(t, b1, v.MaxLenBackpack(b1, b3, b2))
-		assert.Equal(t, b1, v.MaxLenBackpack(b2, b1, b3))
-		assert.Equal(t, b1, v.MaxLenBackpack(b2, b3, b1))
-		assert.Equal(t, b1, v.MaxLenBackpack(b3, b1, b2))
-		assert.Equal(t, b1, v.MaxLenBackpack(b3, b2, b1))
+		assert.Equal(t, b1, v.MaxLenKnapsack(b1, b2, b3))
+		assert.Equal(t, b1, v.MaxLenKnapsack(b1, b3, b2))
+		assert.Equal(t, b1, v.MaxLenKnapsack(b2, b1, b3))
+		assert.Equal(t, b1, v.MaxLenKnapsack(b2, b3, b1))
+		assert.Equal(t, b1, v.MaxLenKnapsack(b3, b1, b2))
+		assert.Equal(t, b1, v.MaxLenKnapsack(b3, b2, b1))
 
 		b4 := knapsack{
 			items: []*wordMetric{
@@ -141,12 +141,12 @@ func TestBackpackmin(t *testing.T) {
 			pathLen: 1,
 			count:   2,
 		}
-		assert.Equal(t, b4, v.MaxLenBackpack(b1, b4, b3))
-		assert.Equal(t, b4, v.MaxLenBackpack(b1, b3, b4))
-		assert.Equal(t, b4, v.MaxLenBackpack(b4, b1, b3))
-		assert.Equal(t, b4, v.MaxLenBackpack(b4, b3, b1))
-		assert.Equal(t, b4, v.MaxLenBackpack(b3, b1, b4))
-		assert.Equal(t, b4, v.MaxLenBackpack(b3, b4, b1))
+		assert.Equal(t, b4, v.MaxLenKnapsack(b1, b4, b3))
+		assert.Equal(t, b4, v.MaxLenKnapsack(b1, b3, b4))
+		assert.Equal(t, b4, v.MaxLenKnapsack(b4, b1, b3))
+		assert.Equal(t, b4, v.MaxLenKnapsack(b4, b3, b1))
+		assert.Equal(t, b4, v.MaxLenKnapsack(b3, b1, b4))
+		assert.Equal(t, b4, v.MaxLenKnapsack(b3, b4, b1))
 
 	})
 }

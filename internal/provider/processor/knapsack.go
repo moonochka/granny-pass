@@ -18,11 +18,6 @@ type Features interface {
 	lastWord() string
 }
 
-//type BackpackFunc interface {
-//	KnapsackTable(n int, k int, items []*wordMetric) [][]knapsack
-//	MaxChoice(bc [][]knapsack) (knapsack, int)
-//}
-
 func (b *knapsack) GetDescription() string {
 	if len(b.items) == 0 {
 		return ""
@@ -58,7 +53,7 @@ func (b *knapsack) lastWord() string {
 	return b.items[l-1].word
 }
 
-// BackpackTable
+// KnapsackTable
 // n - count words in file = count of items
 // k - knapsack capacity = count of symbols in password = 24
 func (v *vocabulary) KnapsackTable(k int, items []*wordMetric) [][]knapsack {
@@ -136,20 +131,20 @@ func (v *vocabulary) MaxChoice(bc [][]knapsack) (knapsack, int) {
 	n := len(bc)
 	k := len(bc[0])
 
-	maxBackpack := bc[0][0]
+	maxKnapsnack := bc[0][0]
 	maxPathLen := 0
 
 	for i := 0; i < n; i++ {
 		if bc[i][k-1].pathLen > maxPathLen {
 			//fmt.Printf("i=%v \n", i)
 			maxPathLen = bc[i][k-1].pathLen
-			maxBackpack = bc[i][k-1]
+			maxKnapsnack = bc[i][k-1]
 
 		}
 	}
 
-	//fmt.Printf("%v \n", maxBackpack.pathLen)
-	//fmt.Printf("%v \n", maxBackpack.GetDescription())
+	//fmt.Printf("%v \n", maxKnapsnack.pathLen)
+	//fmt.Printf("%v \n", maxKnapsnack.GetDescription())
 
-	return maxBackpack, maxPathLen
+	return maxKnapsnack, maxPathLen
 }

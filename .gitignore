@@ -1,2 +1,3 @@
 build/bin
 .idea
+/internal/provider/graph/testdata/test1.json

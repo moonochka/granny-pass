@@ -30,3 +30,22 @@ func New(m map[string]map[string]int, minLen, maxLen, wordCnt int) Processor {
 		wordCnt:        wordCnt,
 	}
 }
+
+type NewProcessor interface {
+	PathLen(word string) (int, error)
+	GapPathLen(word1, word2 string) (int, error)
+	ReadFile(fileName string, needSort bool) ([]*wordMetric, error)
+
+	//KnapsackMinTable(items []*wordMetric) [][]knapsack
+	//MinChoice(bc [][]knapsack) (knapsack, int)
+	//MaxLenKnapsack(b1, b2, b3 knapsack) knapsack
+}
+
+func NewVocab(m map[string]int, minLen, maxLen, wordCnt int) NewProcessor {
+	return &vocab{
+		distanceMap: m,
+		minLen:      minLen,
+		maxLen:      maxLen,
+		wordCnt:     wordCnt,
+	}
+}

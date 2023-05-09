@@ -35,7 +35,7 @@ func (v *vocabulary) KnapsackMinTable(items []*wordMetric) [][]knapsack {
 				}
 			} else if i == 1 {
 				//первая строка заполняется просто: первый предмет кладём или не кладём в зависимости от веса
-				if items[0].len <= j {
+				if len(items[0].word) <= j {
 					b = knapsack{
 						items:   []*wordMetric{items[0]},
 						pathLen: items[0].pathLen,
@@ -52,7 +52,7 @@ func (v *vocabulary) KnapsackMinTable(items []*wordMetric) [][]knapsack {
 				bp[i][j] = b
 			} else {
 				//если очередной предмет не влезает в рюкзак,
-				if items[i-1].len > j {
+				if len(items[i-1].word) > j {
 					//записываем предыдущий максимум
 					bp[i][j] = bp[i-1][j]
 				} else {
@@ -62,7 +62,7 @@ func (v *vocabulary) KnapsackMinTable(items []*wordMetric) [][]knapsack {
 					//+ длина пути между последней буквой имеющегося и первой нового
 
 					//длина остатка = (максимально возможное для текущего рюкзака число букв − число букв текущего слова)
-					lenLeftover = j - items[i-1].len
+					lenLeftover = j - len(items[i-1].word)
 
 					if lenLeftover > 0 {
 						//выберем лучшее слово для добивки оставшихся символов, учитывая расстояние между словами

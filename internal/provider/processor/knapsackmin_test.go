@@ -105,23 +105,23 @@ func TestKnapsackmin(t *testing.T) {
 
 		b1 := knapsack{
 			items: []*wordMetric{
-				{word: "of", len: 2, pathLen: 5},
-				{word: "a", len: 1, pathLen: 0},
+				{word: "of", pathLen: 5},
+				{word: "a", pathLen: 0},
 			},
 			pathLen: 8,
 			count:   2,
 		}
 		b2 := knapsack{
 			items: []*wordMetric{
-				{word: "of", len: 2, pathLen: 5},
+				{word: "of", pathLen: 5},
 			},
 			pathLen: 5,
 			count:   1,
 		}
 		b3 := knapsack{
 			items: []*wordMetric{
-				{word: "a", len: 1, pathLen: 0},
-				{word: "of", len: 2, pathLen: 5},
+				{word: "a", pathLen: 0},
+				{word: "of", pathLen: 5},
 			},
 			pathLen: 13,
 			count:   2,
@@ -135,8 +135,8 @@ func TestKnapsackmin(t *testing.T) {
 
 		b4 := knapsack{
 			items: []*wordMetric{
-				{word: "a", len: 1, pathLen: 0},
-				{word: "ass", len: 3, pathLen: 1},
+				{word: "a", pathLen: 0},
+				{word: "ass", pathLen: 1},
 			},
 			pathLen: 1,
 			count:   2,

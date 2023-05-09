@@ -90,7 +90,6 @@ func (v *vocabulary) ReadFile(fileName string, needSort bool) ([]*wordMetric, er
 
 		wm := wordMetric{
 			word:    word,
-			len:     len(word),
 			pathLen: pathLen,
 		}
 		res = append(res, &wm)
@@ -102,7 +101,7 @@ func (v *vocabulary) ReadFile(fileName string, needSort bool) ([]*wordMetric, er
 
 	if needSort {
 		sort.Slice(res, func(i, j int) bool {
-			return res[i].len > res[j].len
+			return len(res[i].word) > len(res[j].word)
 		})
 	}
 	return res, nil

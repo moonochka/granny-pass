@@ -52,7 +52,6 @@ func TestKnapsack(t *testing.T) {
 					pathLen, err = v.PathLength(word)
 					wm := wordMetric{
 						word:    word,
-						len:     len(word),
 						pathLen: pathLen,
 					}
 					wordMs = append(wordMs, &wm)

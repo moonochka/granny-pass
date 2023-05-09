@@ -137,10 +137,9 @@ func TestVocabulary(t *testing.T) {
 				n, err = v.PathLength(wm.word)
 				assert.NoError(t, err)
 				assert.Equal(t, n, wm.pathLen)
-				assert.Equal(t, len(wm.word), wm.len)
 
 				//check sorting
-				assert.Equal(t, true, length >= wm.len)
+				assert.Equal(t, true, length >= len(wm.word))
 			}
 		})
 	})

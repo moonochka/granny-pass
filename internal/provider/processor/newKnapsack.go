@@ -69,6 +69,7 @@ func (v *vocab) parallelCalc(i, j int, wm *wordMetric, kt *[][]map[uint8]knapsac
 			}
 		}
 
+		setKnapsacks = v.ChooseCandidate(candidateKnapsacks, (*kt)[i-1][j], (*kt)[i][j-1])
 	}
 
 	(*kt)[i][j] = setKnapsacks

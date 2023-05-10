@@ -115,9 +115,26 @@ func TestNewKnapsack(t *testing.T) {
 			ks3[1] = k31
 			ks3[2] = k32
 
-			ksRes := v.ChooseCandidate(ks1, ks2, ks3)
-			assert.Equal(t, k21, ksRes[1])
-			assert.Equal(t, k32, ksRes[2])
+			t.Run("1,2,3", func(t *testing.T) {
+				ksRes := v.ChooseCandidate(ks1, ks2, ks3)
+				assert.Equal(t, k21, ksRes[1])
+				assert.Equal(t, k32, ksRes[2])
+			})
+
+			k41 := knapsack{
+				items:   []*wordMetric{{word: "the", pathLen: 6}},
+				pathLen: 6,
+				count:   1,
+			}
+			ks4 := make(map[uint8]knapsack)
+			ks4[1] = k41
+
+			t.Run("4,2,3", func(t *testing.T) {
+				ksRes := v.ChooseCandidate(ks4, ks2, ks3)
+				assert.Equal(t, k41, ksRes[1])
+				_, ok := ksRes[2]
+				assert.Equal(t, false, ok)
+			})
 
 		})
 

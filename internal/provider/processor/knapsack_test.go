@@ -41,9 +41,10 @@ func TestKnapsack(t *testing.T) {
 				})
 			})
 
-			t.Run("lastWord", func(t *testing.T) {
+			t.Run("firstWord & lastWord", func(t *testing.T) {
 
 				t.Run("empty knapsack", func(t *testing.T) {
+					assert.Equal(t, "", b1.firstWord())
 					assert.Equal(t, "", b1.lastWord())
 				})
 
@@ -58,6 +59,7 @@ func TestKnapsack(t *testing.T) {
 					b1 = knapsack{
 						items: wordMs,
 					}
+					assert.Equal(t, word, b1.firstWord())
 					assert.Equal(t, word, b1.lastWord())
 				})
 
@@ -66,6 +68,7 @@ func TestKnapsack(t *testing.T) {
 						items: wordMetrics,
 					}
 
+					assert.Equal(t, "a", b.firstWord())
 					assert.Equal(t, "biotransformation", b.lastWord())
 				})
 			})

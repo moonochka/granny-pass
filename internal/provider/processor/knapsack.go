@@ -2,7 +2,6 @@ package processor
 
 type wordMetric struct {
 	word    string
-	len     int
 	pathLen int
 }
 
@@ -42,6 +41,15 @@ func (b *knapsack) GetDescriptionWithSpace() string {
 	}
 	return s
 
+}
+
+func (b *knapsack) firstWord() string {
+	l := len(b.items)
+	if l == 0 {
+		return ""
+	}
+
+	return b.items[0].word
 }
 
 func (b *knapsack) lastWord() string {

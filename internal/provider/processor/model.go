@@ -36,6 +36,10 @@ type NewProcessor interface {
 	GapPathLen(word1, word2 string) (int, error)
 	ReadFile(fileName string, needSort bool) ([]*wordMetric, error)
 
+	parallelCalc(i, j int, wm *wordMetric, kt *[][]map[uint8]knapsack) error
+	FindBestCombination(k knapsack, wm *wordMetric) (knapsack, error)
+	ChooseCandidate(candidateKs, upKs, leftKs map[uint8]knapsack) map[uint8]knapsack
+
 	//KnapsackMinTable(items []*wordMetric) [][]knapsack
 	//MinChoice(bc [][]knapsack) (knapsack, int)
 	//MaxLenKnapsack(b1, b2, b3 knapsack) knapsack

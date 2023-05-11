@@ -1,4 +1,4 @@
-GO_CMD=CGO_ENABLED=0 GO111MODULE=on go
+GO_CMD=CGO_ENABLED=0 GO111MODULE=on time go
 
 test:
 	$(GO_CMD) test -tags graphTest ./...

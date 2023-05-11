@@ -12,7 +12,7 @@ type vocab struct {
 	distanceMap map[string]int
 	minLen      int
 	maxLen      int
-	wordCnt     int
+	wordCnt     uint8
 }
 
 func (v *vocab) PathLen(word string) (int, error) {
@@ -107,7 +107,7 @@ func (v *vocab) ReadFile(fileName string, needSort bool) ([]*wordMetric, error) 
 
 	if needSort {
 		sort.Slice(res, func(i, j int) bool {
-			return len(res[i].word) > len(res[j].word)
+			return len(res[i].word) < len(res[j].word)
 		})
 	}
 	return res, nil

@@ -10,13 +10,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type testParam struct {
-	fileName string
-	minLen   int
-	maxLen   int
-	wordCnt  int
-}
-
 func TestKnapsackmin(t *testing.T) {
 	t.Run("test knapsackmin functions", func(t *testing.T) {
 		var (

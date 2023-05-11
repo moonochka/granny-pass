@@ -42,9 +42,6 @@ type NewProcessor interface {
 
 	NewKnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack
 	MinChoice(kt *[][]map[uint8]knapsack) (knapsack, int)
-	//KnapsackMinTable(items []*wordMetric) [][]knapsack
-	//MinChoice(bc [][]knapsack) (knapsack, int)
-	//MaxLenKnapsack(b1, b2, b3 knapsack) knapsack
 }
 
 func NewVocab(m map[string]int, minLen, maxLen int, wordCnt uint8) NewProcessor {

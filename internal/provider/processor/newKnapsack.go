@@ -1,6 +1,3 @@
-//go:build processorTest
-// +build processorTest
-
 package processor
 
 import (

@@ -32,21 +32,6 @@ func (v *vocab) PathLen(word string) (int, error) {
 	return sum, nil
 }
 
-//
-//func (v *vocab) BigramPathLength(bigram string) (int, error) {
-//	if len(bigram) < 2 {
-//		return 0, nil
-//	}
-//
-//	n, ok := v.distanceMatrix[string(bigram[0])][string(bigram[1])]
-//	if !ok {
-//		desc := fmt.Errorf("unknown symbol in bigram:%s", bigram)
-//		return 0, errors.Join(ErrWrongLetter, desc)
-//	}
-//	return n, nil
-//
-//}
-
 func (v *vocab) GapPathLen(word1, word2 string) (int, error) {
 	l1, l2 := len(word1), len(word2)
 	if l1 < 1 || l2 < 1 {
@@ -62,13 +47,6 @@ func (v *vocab) GapPathLen(word1, word2 string) (int, error) {
 
 	return n, nil
 }
-
-//func splitRecursive(str string, size int) []string {
-//	if len(str) <= size {
-//		return []string{str}
-//	}
-//	return append([]string{str[0:size]}, splitRecursive(str[size-1:], size)...)
-//}
 
 func (v *vocab) ReadFile(fileName string, needSort bool) ([]*wordMetric, error) {
 	var (

@@ -114,6 +114,7 @@ func (v *vocab) calcSet(i, j int, wm *wordMetric, kt *[][]map[uint8]knapsack) er
 		ok, needStop                     bool
 		err                              error
 		cnt                              uint8
+		prevPass                         string
 	)
 
 	if len(wm.word) > j {
@@ -148,6 +149,8 @@ func (v *vocab) calcSet(i, j int, wm *wordMetric, kt *[][]map[uint8]knapsack) er
 					return err
 				}
 
+				prevPass = kLeftover.GetDescription()
+
 				//двигаемся вверх по столбцу
 				for i1 := i - 2; i1 > 0 && !needStop; i1-- {
 					kLeftover, ok = (*kt)[i1][lenLeftover][cnt]
@@ -155,15 +158,19 @@ func (v *vocab) calcSet(i, j int, wm *wordMetric, kt *[][]map[uint8]knapsack) er
 						break
 					}
 
+					//если пароль тот же или длина уменьшилась - то считать незачем
+					if prevPass == kLeftover.GetDescription() {
+						continue
+					}
+
+					//если его длина меньше, то дальше искать бессмысленно
+					if len(prevPass) > len(kLeftover.GetDescription()) {
+						break
+					}
+
 					needStop, kNew, err = v.FindBestCombination(kLeftover, wm)
 					if err != nil {
 						return err
-					}
-
-					//TODO: тут можно сравнивать рюкзаки до добавления wn, если запоминать еще и kLeftover
-					//если его длина меньше, то дальше искать бессмысленно
-					if len(kBest.GetDescription()) > len(kNew.GetDescription()) {
-						break
 					}
 
 					if kNew.pathLen < kBest.pathLen {

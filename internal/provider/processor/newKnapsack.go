@@ -3,10 +3,11 @@ package processor
 import (
 	"fmt"
 	"math"
+	"sync"
 )
 
 func (v *vocab) NewKnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack {
-
+	var wg sync.WaitGroup
 	// n - count words in file = count of items
 	n := len(items)
 
@@ -20,12 +21,86 @@ func (v *vocab) NewKnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack {
 			if i == 0 || j == 0 {
 				//нулевую строку и столбец заполняем нулями
 				kt[i][j] = make(map[uint8]knapsack)
-			} else {
+			} /*else {
 				//TODO: handle error
 				_ = v.calcSet(i, j, items[i-1], &kt)
-			}
+			}*/
 		}
 	}
+
+	for currRow := 1; currRow < n+1; currRow++ {
+		num := int(math.Min(float64(currRow), float64(v.maxLen)))
+		wg.Add(num)
+		for i, j := currRow, 1; i >= 1 && j < v.maxLen+1; i, j = i-1, j+1 {
+			//fmt.Printf("[%d,%d]=%v ", i, j, num)
+			i := i
+			j := j
+			item := items[i-1]
+			go func() {
+				defer wg.Done()
+				_ = v.calcSet(i, j, item, &kt)
+
+			}()
+		}
+		wg.Wait()
+		//fmt.Println()
+	}
+	wg.Wait()
+
+	for currColm := 2; currColm < v.maxLen+1; currColm++ {
+		//num := n - currColm - 1
+		//wg.Add(num)
+		for i, j := n, currColm; j < v.maxLen+1; i, j = i-1, j+1 {
+			i := i
+			j := j
+			item := items[i-1]
+			//go func() {
+			//	defer wg.Done()
+			_ = v.calcSet(i, j, item, &kt)
+
+			//}()
+			//fmt.Printf("[%d,%d]=%v ", i, j, num)
+		}
+		//wg.Wait()
+		//fmt.Println()
+	}
+	//
+	//for currColm := 2; currColm < v.maxLen+1; currColm++ {
+	//	num := n - currColm - 1
+	//	wg.Add(num)
+	//	for i, j := n, currColm; j < v.maxLen+1; i, j = i-1, j+1 {
+	//		i := i
+	//		j := j
+	//		item := items[i-1]
+	//		go func() {
+	//			defer wg.Done()
+	//			_ = v.calcSet(i, j, item, &kt)
+	//
+	//		}()
+	//		//fmt.Printf("[%d,%d]=%v ", i, j, num)
+	//	}
+	//	wg.Wait()
+	//	//fmt.Println()
+	//}
+
+	//fmt.Println("=========")
+	//for currRow := 1; currRow < n+1; currRow++ {
+	//	num := math.Min(float64(currRow), float64(v.maxLen))
+	//	for i, j := currRow, 1; i >= 1 && j < v.maxLen+1; i, j = i-1, j+1 {
+	//		fmt.Printf("[%d,%d]=%v ", i, j, num)
+	//	}
+	//	fmt.Println()
+	//}
+	//
+	//for currColm := 2; currColm < v.maxLen+1; currColm++ {
+	//	num := n - currColm - 1
+	//	for i, j := n, currColm; j < v.maxLen+1; i, j = i-1, j+1 {
+	//		fmt.Printf("[%d,%d]=%v ", i, j, num)
+	//	}
+	//	fmt.Println()
+	//}
+	//
+	//fmt.Println("=========")
 
 	return &kt
 }

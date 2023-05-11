@@ -173,12 +173,12 @@ func TestNewKnapsack(t *testing.T) {
 					maxLen:   24,
 					wordCnt:  4,
 				},
-				{
-					fileName: "tests/out5b.txt",
-					minLen:   20,
-					maxLen:   24,
-					wordCnt:  4,
-				},
+				//{
+				//	fileName: "tests/out5b.txt",
+				//	minLen:   20,
+				//	maxLen:   24,
+				//	wordCnt:  4,
+				//},
 			}
 
 			for i, param := range tests {

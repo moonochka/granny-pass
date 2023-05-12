@@ -1,5 +1,9 @@
 package processor
 
+import (
+	"strings"
+)
+
 type wordMetric struct {
 	word    string
 	pathLen int
@@ -22,11 +26,12 @@ func (b *knapsack) GetDescription() string {
 		return ""
 	}
 
-	s := ""
+	var strBuilder strings.Builder
+
 	for _, item := range b.items {
-		s += item.word
+		strBuilder.WriteString(item.word)
 	}
-	return s
+	return strBuilder.String()
 
 }
 

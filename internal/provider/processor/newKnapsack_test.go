@@ -168,7 +168,7 @@ func TestNewKnapsack(t *testing.T) {
 					wordCnt:  2,
 				},
 				{
-					fileName: "tests/out5a.txt",
+					fileName: "tests/10000.txt",
 					minLen:   20,
 					maxLen:   24,
 					wordCnt:  4,

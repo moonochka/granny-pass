@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-func (v *vocab) NewKnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack {
+func (v *vocab) KnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack {
 	var wg sync.WaitGroup
 	// n - count words in file = count of items
 	n := len(items)

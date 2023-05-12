@@ -16,7 +16,7 @@ type NewProcessor interface {
 	FindBestCombination(k knapsack, wm *wordMetric) (bool, knapsack, error)
 	ChooseCandidate(candidateKs, upKs, leftKs map[uint8]knapsack) map[uint8]knapsack
 
-	NewKnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack
+	KnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack
 	MinChoice(kt *[][]map[uint8]knapsack) (knapsack, int)
 }
 

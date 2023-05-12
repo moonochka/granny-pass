@@ -61,7 +61,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		kt := p.NewKnapsackTable(wm)
+		kt := p.KnapsackTable(wm)
 		k, pathLen := p.MinChoice(kt)
 		if err != nil {
 			log.Fatal(err)

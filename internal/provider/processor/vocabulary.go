@@ -48,8 +48,6 @@ func (v *vocab) GapPathLen(word1, word2 string) (int, error) {
 		return 0, nil
 	}
 
-	//bigram := string(word1[l1-1]) + string(word2[0])
-
 	bigram := getIndex(symbolOffset(word1[l1-1]), symbolOffset(word2[0]))
 
 	n := v.distanceArray[bigram]

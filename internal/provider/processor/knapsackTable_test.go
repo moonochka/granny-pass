@@ -186,7 +186,7 @@ func TestNewKnapsack(t *testing.T) {
 					assert.NoError(t, err)
 
 					n := len(wordMetrics)
-					kt = v.NewKnapsackTable(wordMetrics)
+					kt = v.KnapsackTable(wordMetrics)
 
 					if i == 0 {
 						printMap(kt, n, param.maxLen, uint8(param.wordCnt))

@@ -3,9 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+
 	"granny-pass/internal/provider/graph"
 	"granny-pass/internal/provider/processor"
-	"log"
 )
 
 const (
@@ -67,23 +68,6 @@ func main() {
 		}
 
 		fmt.Printf("\nRESULT:\n%s \n used words: %s, lenth: %d, path lenth: %d\n", k.GetDescription(), k.GetDescriptionWithSpace(), len(k.GetDescription()), pathLen)
-
-		/*
-			m := PrepareDistMap(useNormalizedKeyboard)
-
-			p := processor.New(m, minLen, maxLen, wordCnt)
-			wm, err := p.ReadFile(vocabularyDir+vocFile, true)
-			if err != nil {
-				log.Fatal(err)
-			}
-			bt := p.KnapsackMinTable(wm)
-			b, pathLen := p.MinChoice(bt)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			fmt.Printf("\nRESULT:\n%s \n used words: %s, lenth: %d, path lenth: %d\n", b.GetDescription(), b.GetDescriptionWithSpace(), len(b.GetDescription()), pathLen)
-		*/
 	}
 }
 

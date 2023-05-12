@@ -21,10 +21,7 @@ func (v *vocab) NewKnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack {
 			if i == 0 || j == 0 {
 				//нулевую строку и столбец заполняем нулями
 				kt[i][j] = make(map[uint8]knapsack)
-			} /*else {
-				//TODO: handle error
-				_ = v.calcSet(i, j, items[i-1], &kt)
-			}*/
+			}
 		}
 	}
 
@@ -37,6 +34,7 @@ func (v *vocab) NewKnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack {
 			item := items[i-1]
 			go func() {
 				defer wg.Done()
+				//TODO: handle error
 				_ = v.calcSet(i, j, item, &kt)
 
 			}()
@@ -62,24 +60,6 @@ func (v *vocab) NewKnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack {
 		//wg.Wait()
 		//fmt.Println()
 	}
-	//
-	//for currColm := 2; currColm < v.maxLen+1; currColm++ {
-	//	num := n - currColm - 1
-	//	wg.Add(num)
-	//	for i, j := n, currColm; j < v.maxLen+1; i, j = i-1, j+1 {
-	//		i := i
-	//		j := j
-	//		item := items[i-1]
-	//		go func() {
-	//			defer wg.Done()
-	//			_ = v.calcSet(i, j, item, &kt)
-	//
-	//		}()
-	//		//fmt.Printf("[%d,%d]=%v ", i, j, num)
-	//	}
-	//	wg.Wait()
-	//	//fmt.Println()
-	//}
 
 	//fmt.Println("=========")
 	//for currRow := 1; currRow < n+1; currRow++ {
@@ -125,7 +105,6 @@ func (v *vocab) calcSet(i, j int, wm *wordMetric, kt *[][]map[uint8]knapsack) er
 		candidateKnapsacks[1] = knapsack{
 			items:   []*wordMetric{wm},
 			pathLen: wm.pathLen,
-			count:   1,
 		}
 
 		lenLeftover := j - len(wm.word)
@@ -219,7 +198,6 @@ func (v *vocab) FindBestCombination(k knapsack, wm *wordMetric) (bool, knapsack,
 		return g1 == 0, knapsack{
 			items:   append(newItems, k.items...),
 			pathLen: wm.pathLen + g1 + k.pathLen,
-			count:   k.count + 1,
 		}, nil
 
 	}
@@ -229,7 +207,6 @@ func (v *vocab) FindBestCombination(k knapsack, wm *wordMetric) (bool, knapsack,
 	return g2 == 0, knapsack{
 		items:   append(newItems, wm),
 		pathLen: k.pathLen + g2 + wm.pathLen,
-		count:   k.count + 1,
 	}, nil
 
 }
@@ -287,7 +264,6 @@ func (v *vocab) MinChoice(kt *[][]map[uint8]knapsack) (knapsack, int) {
 			kn, ok := (*kt)[i][j][cnt]
 			if ok {
 				if kn.pathLen < minPathLen && kn.Length() >= v.minLen {
-					//fmt.Printf("i=%v j=%v \n", i, j)
 					minPathLen = kn.pathLen
 					minKnapsack = kn
 				}

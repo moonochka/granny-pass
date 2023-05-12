@@ -86,33 +86,27 @@ func TestNewKnapsack(t *testing.T) {
 			k11 := knapsack{
 				items:   []*wordMetric{{word: "a", pathLen: 0}},
 				pathLen: 0,
-				count:   1,
 			}
 			k21 := knapsack{
 				items:   []*wordMetric{{word: "of", pathLen: 5}},
 				pathLen: 5,
-				count:   1,
 			}
 			k31 := knapsack{
 				items:   []*wordMetric{{word: "is", pathLen: 6}},
 				pathLen: 6,
-				count:   1,
 			}
 
 			k12 := knapsack{
 				items:   []*wordMetric{{word: "a", pathLen: 0}, {word: "of", pathLen: 5}},
 				pathLen: 13,
-				count:   2,
 			}
 			k22 := knapsack{
 				items:   []*wordMetric{{word: "of", pathLen: 5}, {word: "to", pathLen: 4}},
 				pathLen: 13,
-				count:   2,
 			}
 			k32 := knapsack{
 				items:   []*wordMetric{{word: "to", pathLen: 4}, {word: "of", pathLen: 5}},
 				pathLen: 9,
-				count:   2,
 			}
 
 			ks1 := make(map[uint8]knapsack)
@@ -137,7 +131,6 @@ func TestNewKnapsack(t *testing.T) {
 			k41 := knapsack{
 				items:   []*wordMetric{{word: "the", pathLen: 6}},
 				pathLen: 6,
-				count:   1,
 			}
 			ks4 := make(map[uint8]knapsack)
 			ks4[1] = k41
@@ -168,7 +161,7 @@ func TestNewKnapsack(t *testing.T) {
 					wordCnt:  2,
 				},
 				{
-					fileName: "tests/10000.txt",
+					fileName: "tests/out5a.txt",
 					minLen:   20,
 					maxLen:   24,
 					wordCnt:  4,

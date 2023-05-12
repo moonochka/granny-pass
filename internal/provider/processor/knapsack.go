@@ -19,6 +19,8 @@ type Features interface {
 	GetDescription() string
 	GetDescriptionWithSpace() string
 	lastWord() string
+	firstWord() string
+	Length() int
 }
 
 func (b *knapsack) GetDescription() string {
@@ -72,100 +74,4 @@ func (b *knapsack) Length() int {
 		sum += len((*i).word)
 	}
 	return sum
-}
-
-// KnapsackTable
-// n - count words in file = count of items
-// k - knapsack capacity = count of symbols in password = 24
-func (v *vocabulary) KnapsackTable(k int, items []*wordMetric) [][]knapsack {
-	var (
-		b          knapsack
-		newPathLen int
-	)
-
-	n := len(items)
-
-	bp := make([][]knapsack, n+1)
-	for i := range bp {
-		bp[i] = make([]knapsack, k+1)
-	}
-
-	for i := 0; i < n+1; i++ {
-		for j := 0; j < k+1; j++ {
-
-			if i == 0 || j == 0 {
-				//нулевую строку и столбец заполняем нулями
-				bp[i][j] = knapsack{
-					items:   nil,
-					pathLen: 0,
-					count:   0,
-				}
-			} else if i == 1 {
-				//первая строка заполняется просто: первый предмет кладём или не кладём в зависимости от веса
-				if len(items[0].word) <= j {
-					b = knapsack{
-						items:   []*wordMetric{items[0]},
-						pathLen: items[0].pathLen,
-						count:   1,
-					}
-				} else {
-					b = knapsack{
-						items:   nil,
-						pathLen: 0,
-						count:   0,
-					}
-				}
-
-				bp[i][j] = b
-			} else {
-				//если очередной предмет не влезает в рюкзак,
-				if len(items[i-1].word) > j {
-					//записываем предыдущий максимум
-					bp[i][j] = bp[i-1][j]
-				} else {
-					//рассчитаем цену очередного предмета + максимальную цену для
-					//(максимально возможный для рюкзака вес − вес предмета)
-					newPathLen = items[i-1].pathLen + bp[i-1][j-len(items[i-1].word)].pathLen
-
-					//если предыдущий максимум больше
-					if bp[i-1][j].pathLen > newPathLen {
-						//запишем его
-						bp[i][j] = bp[i-1][j]
-					} else {
-						//иначе фиксируем новый максимум: текущий предмет + стоимость свободного пространства
-						bp[i][j] = knapsack{
-							items:   append(bp[i-1][j-len(items[i-1].word)].items, items[i-1]),
-							pathLen: newPathLen,
-							count:   bp[i-1][j-len(items[i-1].word)].count + 1,
-						}
-					}
-				}
-			}
-
-		}
-	}
-
-	return bp
-}
-
-func (v *vocabulary) MaxChoice(bc [][]knapsack) (knapsack, int) {
-	n := len(bc)
-	k := len(bc[0])
-
-	maxKnapsnack := bc[0][0]
-	maxPathLen := 0
-
-	for i := 0; i < n; i++ {
-		if bc[i][k-1].pathLen > maxPathLen {
-			//fmt.Printf("i=%v \n", i)
-			maxPathLen = bc[i][k-1].pathLen
-			maxKnapsnack = bc[i][k-1]
-
-		}
-	}
-
-	//fmt.Printf("%v \n", maxKnapsnack.pathLen)
-	//fmt.Printf("%v \n", maxKnapsnack.GetDescription())
-
-	return maxKnapsnack, maxPathLen
 }

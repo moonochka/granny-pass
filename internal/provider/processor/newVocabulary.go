@@ -22,9 +22,6 @@ func symbolOffset(s uint8) int {
 
 func getIndex(a, b int) int {
 	res := int(uint16((a << 5) + b))
-	//if res > 1024 {
-	//	log.Fatal(a, b, res)
-	//}
 	return res
 }
 

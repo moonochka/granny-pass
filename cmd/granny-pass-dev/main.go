@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 
 	"granny-pass/internal/provider/graph"
 	"granny-pass/internal/provider/processor"
@@ -12,6 +13,8 @@ import (
 const (
 	maxKeyboardPathLen = 20
 	vocabularyDir      = "vocabularies/"
+	distMapDir         = "distanceMaps/"
+	distMapFilePrefix  = "dm"
 
 	defaultMinPasswordLen = 20
 	defaultMaxPasswordLen = 24
@@ -35,6 +38,7 @@ func main() {
 
 	flag.Parse()
 
+	//TODO: cnt>=2
 	if help {
 		flag.PrintDefaults()
 	} else {
@@ -47,22 +51,53 @@ func main() {
 			fmt.Println(" with keyboard from task")
 		}
 
-		m := PrepareDistMap(useNormalizedKeyboard)
+		m, err := GetBigramDistanceMap(useNormalizedKeyboard)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-		p := processor.New(m, minLen, maxLen, wordCnt)
+		p := processor.NewVocab(m, minLen, maxLen, uint8(wordCnt))
+
 		wm, err := p.ReadFile(vocabularyDir+vocFile, true)
 		if err != nil {
 			log.Fatal(err)
 		}
-		bt := p.KnapsackMinTable(wm)
-		b, pathLen := p.MinChoice(bt)
+		kt := p.KnapsackTable(wm)
+		k, pathLen := p.MinChoice(kt)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		fmt.Printf("\nRESULT:\n%s \n used words: %s, lenth: %d, path lenth: %d\n", b.GetDescription(), b.GetDescriptionWithSpace(), len(b.GetDescription()), pathLen)
-
+		fmt.Printf("\nRESULT:\n%s \n used words: %s, lenth: %d, path lenth: %d\n", k.GetDescription(), k.GetDescriptionWithSpace(), len(k.GetDescription()), pathLen)
 	}
+}
+
+func GetBigramDistanceMap(useNormalizedKeyboard bool) ([]int, error) {
+	var (
+		err      error
+		m        []int
+		filename string
+	)
+
+	filename = distMapDir + distMapFilePrefix + ".json"
+	if useNormalizedKeyboard {
+		filename = distMapDir + distMapFilePrefix + "_norm.json"
+	}
+
+	if _, err = os.Stat(filename); err == nil {
+		m, err = graph.ReadFromJson(filename)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		dist := PrepareDistMap(useNormalizedKeyboard)
+		m = graph.BigramDistanceArray(dist)
+		err = graph.SaveToJson(m, filename)
+		if err != nil {
+			fmt.Printf("%v", err)
+		}
+	}
+	return m, nil
 }
 
 func PrepareDistMap(useNormalizedKeyboard bool) map[string]map[string]int {

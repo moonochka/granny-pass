@@ -11,82 +11,54 @@ import (
 	"granny-pass/internal/provider/graph"
 )
 
-func TestVocabulary(t *testing.T) {
-	t.Run("test vocabulary functions", func(t *testing.T) {
+func TestNewVocabulary(t *testing.T) {
+	t.Run("test new vocabulary functions", func(t *testing.T) {
 		var (
-			w1, w2, w3, w4, w5 = "a", "of", "the", "cafe", "tanya"
-			n                  int
-			err                error
-			wordMetrics        []*wordMetric
+			w1, w2, w3, w4, w5, w6, w7 = "a", "of", "the", "cafe", "tanya", "az", "za"
+			n                          int
+			err                        error
+			wordMetrics                []*wordMetric
 		)
 
-		dist := getDistanceMatrixForTests()
-		v := New(dist, 0, 0, 0)
+		dist := getDistanceMapForTests()
+		v := NewVocab(dist, 0, 0, 0)
 
-		t.Run("splitRecursive", func(t *testing.T) {
-			assert.Equal(t, []string{w1}, splitRecursive(w1, 2))
-			assert.Equal(t, []string{w2}, splitRecursive(w2, 2))
-			assert.Equal(t, []string{w3[0:2], w3[1:3]}, splitRecursive(w3, 2))
-			assert.Equal(t, []string{w4[0:2], w4[1:3], w4[2:]}, splitRecursive(w4, 2))
-			assert.Equal(t, []string{w5[0:2], w5[1:3], w5[2:4], w5[3:]}, splitRecursive(w5, 2))
-
-		})
-
-		t.Run("BigramPathLength", func(t *testing.T) {
-			n, err = v.BigramPathLength("fh")
-			assert.NoError(t, err)
-			assert.Equal(t, 2, n)
-
-			n, err = v.BigramPathLength("ac")
-			assert.NoError(t, err)
-			assert.Equal(t, 3, n)
-
-			n, err = v.BigramPathLength("ll")
+		t.Run("PathLen", func(t *testing.T) {
+			n, err = v.PathLen(w1)
 			assert.NoError(t, err)
 			assert.Equal(t, 0, n)
 
-			n, err = v.BigramPathLength("qp")
-			assert.NoError(t, err)
-			assert.Equal(t, 9, n)
-
-			n, err = v.BigramPathLength("q0")
-			assert.Error(t, err)
-
-			n, err = v.BigramPathLength("12")
-			assert.Error(t, err)
-
-			n, err = v.BigramPathLength("?)")
-			assert.Error(t, err)
-		})
-
-		t.Run("PathLength", func(t *testing.T) {
-			n, err = v.PathLength(w1)
-			assert.NoError(t, err)
-			assert.Equal(t, 0, n)
-
-			n, err = v.PathLength(w2)
+			n, err = v.PathLen(w2)
 			assert.NoError(t, err)
 			assert.Equal(t, 5, n)
 
-			n, err = v.PathLength(w3)
+			n, err = v.PathLen(w3)
 			assert.NoError(t, err)
 			assert.Equal(t, 6, n)
 
-			n, err = v.PathLength(w4)
+			n, err = v.PathLen(w4)
 			assert.NoError(t, err)
 			assert.Equal(t, 8, n)
 
-			n, err = v.PathLength(w5)
+			n, err = v.PathLen(w5)
 			assert.NoError(t, err)
 			assert.Equal(t, 17, n)
 
-			n, err = v.PathLength("q 0")
+			n, err = v.PathLen(w6)
+			assert.NoError(t, err)
+			assert.Equal(t, 1, n)
+
+			n, err = v.PathLen(w7)
+			assert.NoError(t, err)
+			assert.Equal(t, 1, n)
+
+			n, err = v.PathLen("q 0")
 			assert.Error(t, err)
 
-			n, err = v.PathLength("12")
+			n, err = v.PathLen("12")
 			assert.Error(t, err)
 
-			n, err = v.PathLength("?)")
+			n, err = v.PathLen("?)")
 			assert.Error(t, err)
 		})
 
@@ -120,33 +92,27 @@ func TestVocabulary(t *testing.T) {
 			assert.NoError(t, err)
 			assert.Equal(t, 1, n)
 
-			n, err = v.GapPathLen("12", w1)
-			assert.Error(t, err)
-
-			n, err = v.GapPathLen(w1, "?)")
-			assert.Error(t, err)
 		})
 
 		t.Run("ReadFile", func(t *testing.T) {
-			wordMetrics, err = v.ReadFile("tests/test.txt", true)
+			wordMetrics, err = v.ReadFile("testdata/test.txt", true)
 			assert.NoError(t, err)
 
 			length := wordMetrics[0].pathLen
 			for _, wm := range wordMetrics {
 
-				n, err = v.PathLength(wm.word)
+				n, err = v.PathLen(wm.word)
 				assert.NoError(t, err)
 				assert.Equal(t, n, wm.pathLen)
-				assert.Equal(t, len(wm.word), wm.len)
 
 				//check sorting
-				assert.Equal(t, true, length >= wm.len)
+				assert.Equal(t, true, length <= len(wm.word))
 			}
 		})
 	})
 }
 
-func getDistanceMatrixForTests() map[string]map[string]int {
+func getDistanceMapForTests() []int {
 	hash := func(v graph.Vertex) string {
 		return v.Name
 	}
@@ -156,7 +122,6 @@ func getDistanceMatrixForTests() map[string]map[string]int {
 	for r := 'a'; r <= 'z'; r++ {
 		_ = g.AddVertex(graph.Vertex{Name: string(r)})
 	}
-	//_ = g.AddVertex(graph.Vertex{Name: " "})
 
 	//add all connections weight=1
 	_ = g.AddEdge("q", "w")
@@ -219,13 +184,7 @@ func getDistanceMatrixForTests() map[string]map[string]int {
 	_ = g.AddEdge("j", "m")
 	_ = g.AddEdge("k", "m")
 
-	//_ = g.AddEdge("x", " ")
-	//_ = g.AddEdge("c", " ")
-	//_ = g.AddEdge("v", " ")
-	//_ = g.AddEdge("b", " ")
-	//_ = g.AddEdge("n", " ")
-	//_ = g.AddEdge("m", " ")
-
 	m, _ := g.WFI(20)
-	return m
+	dist := graph.BigramDistanceArray(m)
+	return dist
 }

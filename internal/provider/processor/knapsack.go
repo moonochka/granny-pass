@@ -12,7 +12,6 @@ type wordMetric struct {
 type knapsack struct {
 	items   []*wordMetric
 	pathLen int // в классической интерпретации price - ценность предметов
-	count   int // items count
 }
 
 type Features interface {
@@ -74,4 +73,8 @@ func (b *knapsack) Length() int {
 		sum += len((*i).word)
 	}
 	return sum
+}
+
+func (b *knapsack) isEmpty() bool {
+	return len(b.items) == 0
 }

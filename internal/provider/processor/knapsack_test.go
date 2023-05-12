@@ -45,6 +45,7 @@ func TestKnapsack(t *testing.T) {
 					assert.Equal(t, "", b1.firstWord())
 					assert.Equal(t, "", b1.lastWord())
 					assert.Equal(t, 0, b1.Length())
+					assert.Equal(t, true, b1.isEmpty())
 				})
 
 				t.Run("1 word knapsack", func(t *testing.T) {
@@ -61,6 +62,7 @@ func TestKnapsack(t *testing.T) {
 					assert.Equal(t, word, b1.firstWord())
 					assert.Equal(t, word, b1.lastWord())
 					assert.Equal(t, 5, b1.Length())
+					assert.Equal(t, false, b1.isEmpty())
 				})
 
 				t.Run("knapsack from test.txt", func(t *testing.T) {
@@ -71,6 +73,7 @@ func TestKnapsack(t *testing.T) {
 					assert.Equal(t, "a", b.firstWord())
 					assert.Equal(t, "biotransformation", b.lastWord())
 					assert.Equal(t, 28, b.Length())
+					assert.Equal(t, false, b1.isEmpty())
 				})
 			})
 		})
@@ -87,6 +90,7 @@ func TestKnapsack(t *testing.T) {
 
 				assert.Equal(t, "aofthebike", b.GetDescription())
 				assert.Equal(t, 10, b.Length())
+				assert.Equal(t, false, b1.isEmpty())
 				assert.Equal(t, "a", b.firstWord())
 				assert.Equal(t, "bike", b.lastWord())
 			})
@@ -105,6 +109,7 @@ func TestKnapsack(t *testing.T) {
 
 				assert.Equal(t, "aofbiotransformationbikeoatmeals", b.GetDescription())
 				assert.Equal(t, 32, b.Length())
+				assert.Equal(t, false, b1.isEmpty())
 				assert.Equal(t, "a", b.firstWord())
 				assert.Equal(t, "oatmeals", b.lastWord())
 			})

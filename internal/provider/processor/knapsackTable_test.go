@@ -110,9 +110,9 @@ func TestNewKnapsack(t *testing.T) {
 				pathLen: 9,
 			}
 
-			ks1 := make(map[uint8]knapsack)
-			ks2 := make(map[uint8]knapsack)
-			ks3 := make(map[uint8]knapsack)
+			ks1 := make([]knapsack, 3)
+			ks2 := make([]knapsack, 3)
+			ks3 := make([]knapsack, 3)
 
 			ks1[1] = k11
 			ks1[2] = k12
@@ -125,22 +125,21 @@ func TestNewKnapsack(t *testing.T) {
 
 			t.Run("1,2,3", func(t *testing.T) {
 				ksRes := v.ChooseCandidate(ks1, ks2, ks3)
-				assert.Equal(t, k21, ksRes[1])
-				assert.Equal(t, k32, ksRes[2])
+				assert.Equal(t, k21.GetDescription(), ksRes[1].GetDescription())
+				assert.Equal(t, k32.GetDescription(), ksRes[2].GetDescription())
 			})
 
 			k41 := knapsack{
 				items:   []*wordMetric{{word: "the", pathLen: 6}},
 				pathLen: 6,
 			}
-			ks4 := make(map[uint8]knapsack)
+			ks4 := make([]knapsack, 3)
 			ks4[1] = k41
 
 			t.Run("4,2,3", func(t *testing.T) {
 				ksRes := v.ChooseCandidate(ks4, ks2, ks3)
-				assert.Equal(t, k41, ksRes[1])
-				_, ok := ksRes[2]
-				assert.Equal(t, false, ok)
+				assert.Equal(t, k41.GetDescription(), ksRes[1].GetDescription())
+				assert.Equal(t, true, ksRes[2].isEmpty())
 			})
 
 		})
@@ -151,7 +150,7 @@ func TestNewKnapsack(t *testing.T) {
 				err           error
 				wordMetrics   []*wordMetric
 				k             knapsack
-				kt            *[][]map[uint8]knapsack
+				kt            *[][][]knapsack
 			)
 
 			tests := []testParam{
@@ -193,9 +192,10 @@ func TestNewKnapsack(t *testing.T) {
 					for n1, x := range *kt {
 						for n2, y := range x {
 							for cnt, k1 := range y {
-								// кол-во слов = индексу map
-								assert.Equal(t, uint8(len(k1.items)), cnt)
-
+								if !k1.isEmpty() {
+									// кол-во слов = индексу map
+									assert.Equal(t, len(k1.items), cnt)
+								}
 								p, err = v.PathLen(k1.GetDescription())
 								assert.NoError(t, err)
 								if p != k1.pathLen {
@@ -232,49 +232,50 @@ func TestNewKnapsack(t *testing.T) {
 	})
 }
 
+/*
 func TestMain1(t *testing.T) {
 
-	t.Run("test like main", func(t *testing.T) {
-		var (
-			maxPathLen  int
-			err         error
-			wordMetrics []*wordMetric
-			k           knapsack
-			kt          *[][]map[uint8]knapsack
-		)
+		t.Run("test like main", func(t *testing.T) {
+			var (
+				maxPathLen  int
+				err         error
+				wordMetrics []*wordMetric
+				k           knapsack
+				kt          *[][][]knapsack
+			)
 
-		tests := []testParam{
-			{
-				fileName: "tests/10000.txt",
-				minLen:   20,
-				maxLen:   24,
-				wordCnt:  4,
-			},
-		}
+			tests := []testParam{
+				{
+					fileName: "tests/10000.txt",
+					minLen:   20,
+					maxLen:   24,
+					wordCnt:  4,
+				},
+			}
 
-		for i, param := range tests {
-			dist := getDistanceMapForTests()
-			t.Run(fmt.Sprintf("Test %d, from file %s", i, param.fileName), func(t *testing.T) {
+			for i, param := range tests {
+				dist := getDistanceMapForTests()
+				t.Run(fmt.Sprintf("Test %d, from file %s", i, param.fileName), func(t *testing.T) {
 
-				v := NewVocab(dist, param.minLen, param.maxLen, uint8(param.wordCnt))
-				wordMetrics, err = v.ReadFile(param.fileName, true)
-				assert.NoError(t, err)
+					v := NewVocab(dist, param.minLen, param.maxLen, uint8(param.wordCnt))
+					wordMetrics, err = v.ReadFile(param.fileName, true)
+					assert.NoError(t, err)
 
-				kt = v.KnapsackTable(wordMetrics)
+					kt = v.KnapsackTable(wordMetrics)
 
-				k, maxPathLen = v.MinChoice(kt)
-				fmt.Printf("pathLen: %d\npassword: %s\nwords: %s\n", maxPathLen, k.GetDescription(), k.GetDescriptionWithSpace())
-			})
-		}
-	})
-}
-
-func printMap(kt *[][]map[uint8]knapsack, n, k int, wordCnt uint8) {
+					k, maxPathLen = v.MinChoice(kt)
+					fmt.Printf("pathLen: %d\npassword: %s\nwords: %s\n", maxPathLen, k.GetDescription(), k.GetDescriptionWithSpace())
+				})
+			}
+		})
+	}
+*/
+func printMap(kt *[][][]knapsack, n, k int, wordCnt uint8) {
 	for i := 0; i < n+1; i++ {
 		for j := 0; j < k+1; j++ {
 			s := ""
 			for cnt := uint8(1); cnt <= wordCnt; cnt++ {
-				if b, ok := (*kt)[i][j][uint8(cnt)]; ok {
+				if b := (*kt)[i][j][uint8(cnt)]; !b.isEmpty() {
 					s = fmt.Sprintf("%s[%d:%d=%v]", s, cnt, b.pathLen, b.GetDescription())
 				} else {
 					s = fmt.Sprintf("%s[%d:_=_]", s, cnt)

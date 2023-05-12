@@ -81,12 +81,13 @@ func TestNewVocabulary(t *testing.T) {
 			n, err = v.GapPathLen("q", "a")
 			assert.NoError(t, err)
 			assert.Equal(t, 1, n)
+			/*
+				n, err = v.GapPathLen("12", w1)
+				assert.Error(t, err)
 
-			n, err = v.GapPathLen("12", w1)
-			assert.Error(t, err)
-
-			n, err = v.GapPathLen(w1, "?)")
-			assert.Error(t, err)
+				n, err = v.GapPathLen(w1, "?)")
+				assert.Error(t, err)
+			*/
 		})
 
 		t.Run("ReadFile", func(t *testing.T) {

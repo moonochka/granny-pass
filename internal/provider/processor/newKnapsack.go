@@ -156,14 +156,14 @@ func (v *vocab) calcSet(i, j int, wm *wordMetric, kt *[][]map[uint8]knapsack) er
 						break
 					}
 
+					//если его длина меньше, то дальше искать бессмысленно
+					if len(prevPass) > kLeftover.Length() {
+						break
+					}
+
 					//если пароль тот же или длина уменьшилась - то считать незачем
 					if prevPass == kLeftover.GetDescription() {
 						continue
-					}
-
-					//если его длина меньше, то дальше искать бессмысленно
-					if len(prevPass) > len(kLeftover.GetDescription()) {
-						break
 					}
 
 					needStop, kNew, err = v.FindBestCombination(kLeftover, wm)
@@ -254,9 +254,9 @@ func (v *vocab) ChooseCandidate(candidateKs, upKs, leftKs map[uint8]knapsack) ma
 
 		for _, kl := range list {
 			b := bestKs[cnt]
-			if len(b.GetDescription()) < len(kl.GetDescription()) {
+			if b.Length() < kl.Length() {
 				bestKs[cnt] = kl
-			} else if len(b.GetDescription()) == len(kl.GetDescription()) && bestKs[cnt].pathLen > kl.pathLen {
+			} else if b.Length() == kl.Length() && bestKs[cnt].pathLen > kl.pathLen {
 				bestKs[cnt] = kl
 			}
 		}
@@ -286,7 +286,7 @@ func (v *vocab) MinChoice(kt *[][]map[uint8]knapsack) (knapsack, int) {
 		for j := v.minLen; j < k; j++ {
 			kn, ok := (*kt)[i][j][cnt]
 			if ok {
-				if kn.pathLen < minPathLen && len(kn.GetDescription()) >= v.minLen {
+				if kn.pathLen < minPathLen && kn.Length() >= v.minLen {
 					//fmt.Printf("i=%v j=%v \n", i, j)
 					minPathLen = kn.pathLen
 					minKnapsack = kn

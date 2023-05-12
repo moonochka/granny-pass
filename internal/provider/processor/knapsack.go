@@ -66,6 +66,14 @@ func (b *knapsack) lastWord() string {
 	return b.items[l-1].word
 }
 
+func (b *knapsack) Length() int {
+	sum := 0
+	for _, i := range b.items {
+		sum += len((*i).word)
+	}
+	return sum
+}
+
 // KnapsackTable
 // n - count words in file = count of items
 // k - knapsack capacity = count of symbols in password = 24

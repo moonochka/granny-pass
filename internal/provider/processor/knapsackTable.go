@@ -174,7 +174,7 @@ func (v *vocab) FindBestCombination(k knapsack, wm *wordMetric) (bool, knapsack,
 	if g1 < g2 {
 		//add in the front
 		newItems := append([]*wordMetric{}, wm)
-		return g1 == 0, knapsack{
+		return g1 <= 1, knapsack{
 			items:   append(newItems, k.items...),
 			pathLen: wm.pathLen + g1 + k.pathLen,
 		}, nil
@@ -183,7 +183,7 @@ func (v *vocab) FindBestCombination(k knapsack, wm *wordMetric) (bool, knapsack,
 
 	//add in the end
 	newItems := append([]*wordMetric{}, k.items...)
-	return g2 == 0, knapsack{
+	return g2 <= 1, knapsack{
 		items:   append(newItems, wm),
 		pathLen: k.pathLen + g2 + wm.pathLen,
 	}, nil

@@ -29,8 +29,20 @@ func getIndexBigram(s1, s2 uint8) int {
 
 func (v *vocab) PathLen(word string) (int, error) {
 	sum := 0
+	l := len(word)
 
-	for i := 0; i < (len(word) - 1); i++ {
+	if l == 0 {
+		return 0, nil
+	}
+
+	if word[l-1] < 'a' || word[l-1] > 'z' {
+		return 0, fmt.Errorf("wrong symbol: %v", word[l-1])
+	}
+
+	for i := 0; i < (l - 1); i++ {
+		if word[i] < 'a' || word[i] > 'z' {
+			return 0, fmt.Errorf("wrong symbol: %v", word[i])
+		}
 		pathLen := v.distanceArray[getIndexBigram(word[i], word[i+1])]
 
 		sum += pathLen

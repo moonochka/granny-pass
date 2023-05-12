@@ -14,10 +14,10 @@ import (
 func TestNewVocabulary(t *testing.T) {
 	t.Run("test new vocabulary functions", func(t *testing.T) {
 		var (
-			w1, w2, w3, w4, w5 = "a", "of", "the", "cafe", "tanya"
-			n                  int
-			err                error
-			wordMetrics        []*wordMetric
+			w1, w2, w3, w4, w5, w6, w7 = "a", "of", "the", "cafe", "tanya", "az", "za"
+			n                          int
+			err                        error
+			wordMetrics                []*wordMetric
 		)
 
 		dist := getDistanceMapForTests()
@@ -44,14 +44,22 @@ func TestNewVocabulary(t *testing.T) {
 			assert.NoError(t, err)
 			assert.Equal(t, 17, n)
 
-			//n, err = v.PathLen("q 0")
-			//assert.Error(t, err)
-			//
-			//n, err = v.PathLen("12")
-			//assert.Error(t, err)
-			//
-			//n, err = v.PathLen("?)")
-			//assert.Error(t, err)
+			n, err = v.PathLen(w6)
+			assert.NoError(t, err)
+			assert.Equal(t, 1, n)
+
+			n, err = v.PathLen(w7)
+			assert.NoError(t, err)
+			assert.Equal(t, 1, n)
+
+			n, err = v.PathLen("q 0")
+			assert.Error(t, err)
+
+			n, err = v.PathLen("12")
+			assert.Error(t, err)
+
+			n, err = v.PathLen("?)")
+			assert.Error(t, err)
 		})
 
 		t.Run("GapPathLen", func(t *testing.T) {
@@ -83,13 +91,7 @@ func TestNewVocabulary(t *testing.T) {
 			n, err = v.GapPathLen("q", "a")
 			assert.NoError(t, err)
 			assert.Equal(t, 1, n)
-			/*
-				n, err = v.GapPathLen("12", w1)
-				assert.Error(t, err)
 
-				n, err = v.GapPathLen(w1, "?)")
-				assert.Error(t, err)
-			*/
 		})
 
 		t.Run("ReadFile", func(t *testing.T) {

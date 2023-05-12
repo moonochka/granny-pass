@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -8,42 +9,45 @@ func TestFile(t *testing.T) {
 
 	t.Run("test file functions", func(t *testing.T) {
 		var (
-		//dist, distRes []int
-		//m             map[string]map[string]int
-		//err           error
-		//filename      = "testdata/test1.json"
+			dist, distRes []int
+			m             map[string]map[string]int
+			err           error
+			filename      = "testdata/test1.json"
+			s             string
+			bigrams       []string
 		)
 
-		//t.Run("BigramDistanceMap", func(t *testing.T) {
-		//	m = getDistMapForTest()
-		//	dist = BigramDistanceArray(m)
-		//
-		//	assert.Equal(t, 0, dist["aa"])
-		//	assert.Equal(t, 0, dist["ss"])
-		//	assert.Equal(t, 0, dist["dd"])
-		//
-		//	assert.Equal(t, 1, dist["as"])
-		//	assert.Equal(t, 1, dist["sa"])
-		//	assert.Equal(t, 1, dist["sd"])
-		//	assert.Equal(t, 1, dist["ds"])
-		//
-		//	assert.Equal(t, 2, dist["ad"])
-		//	assert.Equal(t, 2, dist["da"])
-		//})
+		t.Run("BigramDistanceMap", func(t *testing.T) {
+			m = getDistMapForTest()
+			dist = BigramDistanceArray(m)
 
-		//t.Run("SaveToJson", func(t *testing.T) {
-		//	err = SaveToJson(dist, filename)
-		//	assert.NoError(t, err)
-		//})
-		//
-		//t.Run("ReadFromJson", func(t *testing.T) {
-		//	distRes, err = ReadFromJson(filename)
-		//	assert.NoError(t, err)
-		//
-		//	for k := range dist {
-		//		assert.Equal(t, dist[k], distRes[k])
-		//	}
-		//})
+			bigrams = []string{"aa", "ss", "dd", "as", "sa", "sd", "ds", "ad", "da"}
+			for _, s = range bigrams {
+				assert.Equal(t, m[string(s[0])][string(s[1])], dist[getIndex(s[0], s[1])])
+				if s[0] == s[1] {
+					assert.Equal(t, true, dist[getIndex(s[0], s[1])] == 0)
+				} else if s == "ad" || s == "da" {
+					assert.Equal(t, true, dist[getIndex(s[0], s[1])] == 2)
+				} else {
+					assert.Equal(t, true, dist[getIndex(s[0], s[1])] == 1)
+
+				}
+			}
+		})
+
+		t.Run("SaveToJson", func(t *testing.T) {
+			err = SaveToJson(dist, filename)
+			assert.NoError(t, err)
+		})
+
+		t.Run("ReadFromJson", func(t *testing.T) {
+			distRes, err = ReadFromJson(filename)
+			assert.NoError(t, err)
+
+			for k := range dist {
+				assert.Equal(t, dist[k], distRes[k])
+			}
+		})
 	})
 }
 

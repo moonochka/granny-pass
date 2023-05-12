@@ -6,31 +6,24 @@ import (
 	"os"
 )
 
-func BigramDistanceMap(m map[string]map[string]int) map[string]int {
-	res := make(map[string]int)
-
-	for k1, v1 := range m {
-		for k2, v2 := range v1 {
-			res[k1+k2] = v2
-		}
-	}
-	return res
-}
-
 func BigramDistanceArray(m map[string]map[string]int) []int {
 	res := make([]int, 32*32)
 
 	for k1, v1 := range m {
 		for k2, v2 := range v1 {
-			s1 := int(k1[0]) - int('a')
-			s2 := int(k2[0]) - int('a')
-			res[s1<<5+s2] = v2
+			res[getIndex(k1[0], k2[0])] = v2
 		}
 	}
 	return res
 }
 
-func SaveToJson(m map[string]int, filename string) error {
+func getIndex(a, b uint8) int {
+	a0 := int(a) - int('a')
+	b0 := int(b) - int('a')
+	return a0<<5 + b0
+}
+
+func SaveToJson(m []int, filename string) error {
 	jsonData, err := json.Marshal(m)
 
 	if err != nil {
@@ -54,8 +47,8 @@ func SaveToJson(m map[string]int, filename string) error {
 	return nil
 }
 
-func ReadFromJson(filename string) (map[string]int, error) {
-	var res map[string]int
+func ReadFromJson(filename string) ([]int, error) {
+	var res []int
 
 	jsonFile, err := os.Open(filename)
 	if err != nil {

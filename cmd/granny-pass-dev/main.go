@@ -3,11 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
-	"os"
-
 	"granny-pass/internal/provider/graph"
 	"granny-pass/internal/provider/processor"
+	"log"
 )
 
 const (
@@ -89,31 +87,31 @@ func main() {
 	}
 }
 
-func GetBigramDistanceMap(useNormalizedKeyboard bool) (map[string]int, error) {
+func GetBigramDistanceMap(useNormalizedKeyboard bool) ([]int, error) {
 	var (
-		err      error
-		m        map[string]int
-		filename string
+		//err      error
+		m []int
+		//filename string
 	)
 
-	filename = distMapDir + distMapFilePrefix + ".json"
-	if useNormalizedKeyboard {
-		filename = distMapDir + distMapFilePrefix + "_norm.json"
-	}
+	//filename = distMapDir + distMapFilePrefix + ".json"
+	//if useNormalizedKeyboard {
+	//	filename = distMapDir + distMapFilePrefix + "_norm.json"
+	//}
 
-	if _, err = os.Stat(filename); err == nil {
-		m, err = graph.ReadFromJson(filename)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		dist := PrepareDistMap(useNormalizedKeyboard)
-		m = graph.BigramDistanceMap(dist)
-		err = graph.SaveToJson(m, filename)
-		if err != nil {
-			fmt.Printf("%v", err)
-		}
-	}
+	//if _, err = os.Stat(filename); err == nil {
+	//	m, err = graph.ReadFromJson(filename)
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//} else {
+	dist := PrepareDistMap(useNormalizedKeyboard)
+	m = graph.BigramDistanceArray(dist)
+	//err = graph.SaveToJson(m, filename)
+	//if err != nil {
+	//	fmt.Printf("%v", err)
+	//}
+	//}
 	return m, nil
 }
 

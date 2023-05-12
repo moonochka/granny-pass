@@ -17,6 +17,19 @@ func BigramDistanceMap(m map[string]map[string]int) map[string]int {
 	return res
 }
 
+func BigramDistanceArray(m map[string]map[string]int) []int {
+	res := make([]int, 32*32)
+
+	for k1, v1 := range m {
+		for k2, v2 := range v1 {
+			s1 := int(k1[0]) - int('a')
+			s2 := int(k2[0]) - int('a')
+			res[s1<<5+s2] = v2
+		}
+	}
+	return res
+}
+
 func SaveToJson(m map[string]int, filename string) error {
 	jsonData, err := json.Marshal(m)
 

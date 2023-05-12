@@ -9,23 +9,36 @@ import (
 )
 
 type vocab struct {
-	distanceMap map[string]int
-	minLen      int
-	maxLen      int
-	wordCnt     uint8
+	distanceArray []int
+	minLen        int
+	maxLen        int
+	wordCnt       uint8
+}
+
+func symbolOffset(s uint8) int {
+
+	return int(s) - int('a')
+}
+
+func getIndex(a, b int) int {
+	res := int(uint16((a << 5) + b))
+	//if res > 1024 {
+	//	log.Fatal(a, b, res)
+	//}
+	return res
+}
+
+func getIndexBigram(s1, s2 uint8) int {
+	return getIndex(symbolOffset(s1), symbolOffset(s2))
 }
 
 func (v *vocab) PathLen(word string) (int, error) {
-	var bigram string
+	var bigram int
 	sum := 0
 
 	for i := 0; i < (len(word) - 1); i++ {
-		bigram = string(word[i]) + string(word[i+1])
-
-		pathLen, ok := v.distanceMap[bigram]
-		if !ok {
-			return 0, fmt.Errorf("unknown symbol in bigram:%s", bigram)
-		}
+		bigram = getIndex(symbolOffset(word[i]), symbolOffset(word[i+1]))
+		pathLen := v.distanceArray[bigram]
 
 		sum += pathLen
 	}
@@ -38,12 +51,11 @@ func (v *vocab) GapPathLen(word1, word2 string) (int, error) {
 		return 0, nil
 	}
 
-	bigram := string(word1[l1-1]) + string(word2[0])
+	//bigram := string(word1[l1-1]) + string(word2[0])
 
-	n, ok := v.distanceMap[bigram]
-	if !ok {
-		return 0, fmt.Errorf("unknown symbol in bigram:%s", bigram)
-	}
+	bigram := getIndex(symbolOffset(word1[l1-1]), symbolOffset(word2[0]))
+
+	n := v.distanceArray[bigram]
 
 	return n, nil
 }

@@ -244,7 +244,7 @@ func TestNewKnapsack(t *testing.T) {
 	})
 }
 
-func getDistanceMapForTests() map[string]int {
+func getDistanceMapForTests() []int {
 	hash := func(v graph.Vertex) string {
 		return v.Name
 	}
@@ -317,7 +317,7 @@ func getDistanceMapForTests() map[string]int {
 	_ = g.AddEdge("k", "m")
 
 	m, _ := g.WFI(20)
-	dist := graph.BigramDistanceMap(m)
+	dist := graph.BigramDistanceArray(m)
 	return dist
 }
 

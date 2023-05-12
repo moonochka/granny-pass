@@ -44,11 +44,11 @@ type NewProcessor interface {
 	MinChoice(kt *[][]map[uint8]knapsack) (knapsack, int)
 }
 
-func NewVocab(m map[string]int, minLen, maxLen int, wordCnt uint8) NewProcessor {
+func NewVocab(m []int, minLen, maxLen int, wordCnt uint8) NewProcessor {
 	return &vocab{
-		distanceMap: m,
-		minLen:      minLen,
-		maxLen:      maxLen,
-		wordCnt:     wordCnt,
+		distanceArray: m,
+		minLen:        minLen,
+		maxLen:        maxLen,
+		wordCnt:       wordCnt,
 	}
 }

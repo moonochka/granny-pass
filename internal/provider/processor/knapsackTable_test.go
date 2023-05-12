@@ -229,12 +229,43 @@ func TestNewKnapsack(t *testing.T) {
 				})
 			}
 		})
+	})
+}
 
-		/////
+func TestMain1(t *testing.T) {
 
-		t.Run("", func(t *testing.T) {
+	t.Run("test like main", func(t *testing.T) {
+		var (
+			maxPathLen  int
+			err         error
+			wordMetrics []*wordMetric
+			k           knapsack
+			kt          *[][]map[uint8]knapsack
+		)
 
-		})
+		tests := []testParam{
+			{
+				fileName: "tests/10000.txt",
+				minLen:   20,
+				maxLen:   24,
+				wordCnt:  4,
+			},
+		}
+
+		for i, param := range tests {
+			dist := getDistanceMapForTests()
+			t.Run(fmt.Sprintf("Test %d, from file %s", i, param.fileName), func(t *testing.T) {
+
+				v := NewVocab(dist, param.minLen, param.maxLen, uint8(param.wordCnt))
+				wordMetrics, err = v.ReadFile(param.fileName, true)
+				assert.NoError(t, err)
+
+				kt = v.KnapsackTable(wordMetrics)
+
+				k, maxPathLen = v.MinChoice(kt)
+				fmt.Printf("pathLen: %d\npassword: %s\nwords: %s\n", maxPathLen, k.GetDescription(), k.GetDescriptionWithSpace())
+			})
+		}
 	})
 }
 

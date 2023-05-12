@@ -32,7 +32,6 @@ func (v *vocab) NewKnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack {
 		num := int(math.Min(float64(currRow), float64(v.maxLen)))
 		wg.Add(num)
 		for i, j := currRow, 1; i >= 1 && j < v.maxLen+1; i, j = i-1, j+1 {
-			//fmt.Printf("[%d,%d]=%v ", i, j, num)
 			i := i
 			j := j
 			item := items[i-1]
@@ -43,7 +42,6 @@ func (v *vocab) NewKnapsackTable(items []*wordMetric) *[][]map[uint8]knapsack {
 			}()
 		}
 		wg.Wait()
-		//fmt.Println()
 	}
 	wg.Wait()
 

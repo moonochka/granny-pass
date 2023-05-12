@@ -93,7 +93,7 @@ func TestNewVocabulary(t *testing.T) {
 		})
 
 		t.Run("ReadFile", func(t *testing.T) {
-			wordMetrics, err = v.ReadFile("tests/test.txt", true)
+			wordMetrics, err = v.ReadFile("testdata/test.txt", true)
 			assert.NoError(t, err)
 
 			length := wordMetrics[0].pathLen

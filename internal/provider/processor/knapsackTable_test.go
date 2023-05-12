@@ -52,7 +52,7 @@ func TestNewKnapsack(t *testing.T) {
 			})
 
 			t.Run("Knapsack from test1.txt & empty word", func(t *testing.T) {
-				wordMetrics, err = v.ReadFile("tests/test1.txt", false)
+				wordMetrics, err = v.ReadFile("testdata/test1.txt", false)
 				assert.NoError(t, err)
 
 				k = knapsack{
@@ -155,19 +155,19 @@ func TestNewKnapsack(t *testing.T) {
 
 			tests := []testParam{
 				{
-					fileName: "tests/test3.txt",
+					fileName: "testdata/test3.txt",
 					minLen:   4,
 					maxLen:   6,
 					wordCnt:  2,
 				},
 				{
-					fileName: "tests/out5a.txt",
+					fileName: "testdata/out5a.txt",
 					minLen:   20,
 					maxLen:   24,
 					wordCnt:  4,
 				},
 				//{
-				//	fileName: "tests/out5b.txt",
+				//	fileName: "testdata/out5b.txt",
 				//	minLen:   20,
 				//	maxLen:   24,
 				//	wordCnt:  4,
@@ -244,16 +244,16 @@ func TestMain1(t *testing.T) {
 				kt          *[][][]knapsack
 			)
 
-			tests := []testParam{
+			testdata := []testParam{
 				{
-					fileName: "tests/10000.txt",
+					fileName: "testdata/10000.txt",
 					minLen:   20,
 					maxLen:   24,
 					wordCnt:  4,
 				},
 			}
 
-			for i, param := range tests {
+			for i, param := range testdata {
 				dist := getDistanceMapForTests()
 				t.Run(fmt.Sprintf("Test %d, from file %s", i, param.fileName), func(t *testing.T) {
 

@@ -30,7 +30,6 @@ func TestFile(t *testing.T) {
 					assert.Equal(t, true, dist[getIndex(s[0], s[1])] == 2)
 				} else {
 					assert.Equal(t, true, dist[getIndex(s[0], s[1])] == 1)
-
 				}
 			}
 		})

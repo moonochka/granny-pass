@@ -23,7 +23,7 @@ func TestKnapsack(t *testing.T) {
 
 		t.Run("test.txt", func(t *testing.T) {
 
-			wordMetrics, err = v.ReadFile("tests/test.txt", false)
+			wordMetrics, err = v.ReadFile("testdata/test.txt", false)
 			assert.NoError(t, err)
 
 			t.Run("GetDescription", func(t *testing.T) {
@@ -80,7 +80,7 @@ func TestKnapsack(t *testing.T) {
 
 		t.Run("test1.txt", func(t *testing.T) {
 
-			wordMetrics, err = v.ReadFile("tests/test1.txt", false)
+			wordMetrics, err = v.ReadFile("testdata/test1.txt", false)
 			assert.NoError(t, err)
 
 			t.Run("knapsack functions", func(t *testing.T) {
@@ -99,7 +99,7 @@ func TestKnapsack(t *testing.T) {
 
 		t.Run("test2.txt", func(t *testing.T) {
 
-			wordMetrics, err = v.ReadFile("tests/test2.txt", false)
+			wordMetrics, err = v.ReadFile("testdata/test2.txt", false)
 			assert.NoError(t, err)
 
 			t.Run("knapsack functions", func(t *testing.T) {

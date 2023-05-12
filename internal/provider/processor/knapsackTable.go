@@ -16,10 +16,10 @@ func (v *vocab) KnapsackTable(items []*wordMetric) *[][][]knapsack {
 		kt[i] = make([][]knapsack, v.maxLen+1)
 	}
 
+	//нулевую строку и столбец заполняем нулями
 	for i := 0; i < n+1; i++ {
 		for j := 0; j < v.maxLen+1; j++ {
 			if i == 0 || j == 0 {
-				//нулевую строку и столбец заполняем нулями
 				kt[i][j] = make([]knapsack, v.wordCnt+1)
 			}
 		}
@@ -43,6 +43,7 @@ func (v *vocab) KnapsackTable(items []*wordMetric) *[][][]knapsack {
 	}
 	wg.Wait()
 
+	//right bottom corner
 	for currColm := 2; currColm < v.maxLen+1; currColm++ {
 		num := v.maxLen - currColm + 1
 		wg.Add(num)

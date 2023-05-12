@@ -2,7 +2,6 @@ package processor
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"os"
 	"sort"
@@ -16,7 +15,6 @@ type vocab struct {
 }
 
 func symbolOffset(s uint8) int {
-
 	return int(s) - int('a')
 }
 
@@ -30,12 +28,10 @@ func getIndexBigram(s1, s2 uint8) int {
 }
 
 func (v *vocab) PathLen(word string) (int, error) {
-	var bigram int
 	sum := 0
 
 	for i := 0; i < (len(word) - 1); i++ {
-		bigram = getIndex(symbolOffset(word[i]), symbolOffset(word[i+1]))
-		pathLen := v.distanceArray[bigram]
+		pathLen := v.distanceArray[getIndexBigram(word[i], word[i+1])]
 
 		sum += pathLen
 	}
@@ -48,10 +44,7 @@ func (v *vocab) GapPathLen(word1, word2 string) (int, error) {
 		return 0, nil
 	}
 
-	bigram := getIndex(symbolOffset(word1[l1-1]), symbolOffset(word2[0]))
-
-	n := v.distanceArray[bigram]
-
+	n := v.distanceArray[getIndexBigram(word1[l1-1], word2[0])]
 	return n, nil
 }
 
@@ -64,8 +57,7 @@ func (v *vocab) ReadFile(fileName string, needSort bool) ([]*wordMetric, error) 
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		desc := fmt.Errorf("file name:%s", fileName)
-		return nil, errors.Join(ErrOpenFile, desc)
+		return nil, fmt.Errorf("file name:%s", fileName)
 	}
 
 	Scanner := bufio.NewScanner(file)

@@ -90,6 +90,11 @@ func (v *vocab) calcSet(i, j int, wm *wordMetric, kt *[][][]knapsack) error {
 		if lenLeftover > 0 {
 			//выберем лучшее слово/слова для добивки оставшихся символов, учитывая расстояние между словами
 			for cnt = 1; cnt < v.wordCnt; cnt++ {
+				// четверки слов не нужно считать, пока не достигнем minLen
+				if cnt == (v.wordCnt-1) && j < v.minLen {
+					continue
+				}
+
 				//добивка с количеством слов cnt
 				kLeftover = (*kt)[i-1][lenLeftover][cnt]
 				if kLeftover.isEmpty() {
